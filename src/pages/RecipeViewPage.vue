@@ -10,12 +10,12 @@
           <div class="wrapped">
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-              <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+              <div>Likes: {{ recipe.popularity }} likes</div>
             </div>
             Ingredients:
             <ul>
               <li
-                v-for="(r, index) in recipe.extendedIngredients"
+                v-for="(r, index) in recipe.ingredients"
                 :key="index + '_' + r.id"
               >
                 {{ r.original }}
@@ -56,10 +56,7 @@ export default {
       try {
         response = await this.axios.get(
           // "https://test-for-3-2.herokuapp.com/recipes/info",
-          this.$root.store.server_domain + "/recipes/info",
-          {
-            params: { id: this.$route.params.recipeId }
-          }
+          this.$root.store.server_domain + "/recipes/fullDetails/" + this.$route.params.recipeId,
         );
 
         // console.log("response.status", response.status);
@@ -69,18 +66,23 @@ export default {
         this.$router.replace("/NotFound");
         return;
       }
+      console.log(response);
 
       let {
-        analyzedInstructions,
-        instructions,
-        extendedIngredients,
-        aggregateLikes,
+        id,
+        title,
         readyInMinutes,
         image,
-        title
-      } = response.data.recipe;
+        popularity,
+        vegan,
+        vegetarian,
+        glutenFree,
+        ingredients,
+        instructions,
+        numOfServing
+      } = response.data;
 
-      let _instructions = analyzedInstructions
+      let _instructions = instructions
         .map((fstep) => {
           fstep.steps[0].step = fstep.name + fstep.steps[0].step;
           return fstep.steps;
@@ -88,15 +90,19 @@ export default {
         .reduce((a, b) => [...a, ...b], []);
 
       let _recipe = {
-        instructions,
-        _instructions,
-        analyzedInstructions,
-        extendedIngredients,
-        aggregateLikes,
+        id,
+        title,
         readyInMinutes,
         image,
-        title
+        popularity,
+        vegan,
+        vegetarian,
+        glutenFree,
+        ingredients,
+        _instructions,
+        numOfServing
       };
+      console.log(_recipe);
 
       this.recipe = _recipe;
     } catch (error) {
