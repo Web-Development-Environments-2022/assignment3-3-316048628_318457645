@@ -38,10 +38,10 @@ export default {
       try {
         const response = await this.axios.get(
           this.$root.store.server_domain + "/recipes/random",
-          // "https://test-for-3-2.herokuapp.com/recipes/random"
+          // "http://localhost:3000/recipes/random",
         );
 
-        // console.log(response);
+        console.log(response);
         const recipes = response.data.recipes;
         this.recipes = [];
         this.recipes.push(...recipes);
