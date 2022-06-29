@@ -3,6 +3,7 @@
     <div id="nav">
       <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
       <router-link :to="{ name: 'search' }">Search</router-link>|
+      <router-link :to="{ name: 'favorites' }">My Favorites</router-link>
       {{ !$root.store.username }}
       <span v-if="!$root.store.username">
         Guest:
@@ -12,6 +13,7 @@
       <span v-else>
         {{ $root.store.username }}: <button @click="Logout">Logout</button>|
         {{ $root.store.username }}: <CreateRecipeModal title="Create Recipe" />|
+        {{ $root.store.username }}: <router-link :to="{ name: 'favorites' }">My Favorites</router-link>
       </span>
     </div>
     <router-view />

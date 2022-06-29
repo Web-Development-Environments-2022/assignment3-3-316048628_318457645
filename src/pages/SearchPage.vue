@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="container">
     <h1 class="title">Search Page</h1>
 
@@ -41,9 +42,26 @@
       <b-button type="submit" variant="primary" style="width:250px;" class="ml-5 w-75">Search</b-button>
     </b-form>
   </div>
+   
+    <div id="results-container">
+      <b-container>
+    <h3>
+    Search Results
+    </h3>
+    <b-row>
+      <b-col v-for="r in recipes" :key="r.id">
+        <RecipePreview class="recipePreview" :recipe="r" />
+      </b-col>
+    </b-row>
+  </b-container>
+
+    </div>
+  </div>
 </template>
 
 <script>
+import RecipePreview from "../components/RecipePreview.vue";
+
 import dietOptions from "../assets/dietOptions";
 import intolerances from "../assets/intolerances";
 
@@ -53,8 +71,12 @@ import {
 
 export default {
   name: "Search",
+    components: {
+    RecipePreview
+  },
   data() {
     return {
+      recipes: [],
       form: {
         queryS: "",
         numOfRes: 5,
@@ -147,7 +169,10 @@ myIntolerance: {get(){
           }
         );
         console.log(response);
-        return response;
+        const recipes = response.data;
+        this.recipes = [];
+        this.recipes.push(...recipes);
+        // return response;
       }
       catch (err) {
         console.log(err.response);
