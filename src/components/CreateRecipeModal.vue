@@ -2,9 +2,8 @@
     <div class="container mt-5">
         <div>
             <b-button v-b-modal.modal-center>Create New Recipe</b-button>
-            <b-modal id="modal-center" centered title="Vue Bootstrap Centered Modal Example" ok-title="Create Recipe" cancel-title="Reset" @ok.prevent="onCreate" @cancel.prevent="onReset">
+            <b-modal id="modal-center" centered title="Create New Recipe" ok-title="Create Recipe" cancel-title="Reset" @ok.prevent="onCreate" @cancel.prevent="onReset">
                 <div class="my-4">
-                    <h1 class="title">Create New Recipe</h1>
                     <b-form >
                         <b-form-group id="input-group-title" label-cols-sm="3" label="Title:" label-for="title">
                             <b-form-input id="title" v-model="$v.form.title.$model" type="text"
@@ -56,20 +55,19 @@
                                 Popularity should be numeric
                             </b-form-invalid-feedback>
                         </b-form-group>
-                            <b-form-checkbox id="checkbox-vegan" v-model="status" name="checkbox-1" value=1
+                            <b-form-checkbox id="checkbox-vegan" v-model="$v.form.vegan.$model" name="checkbox-1" value=1
                                 unchecked-value=0>
                                 Vegan
                             </b-form-checkbox>
-                            <b-form-checkbox id="vegetarian" v-model="status" name="checkbox-2" value=1
+                            <b-form-checkbox id="vegetarian" v-model="$v.form.vegetarian.$model" name="checkbox-2" value=1
                                 unchecked-value=0>
                                 Vegetarian
                             </b-form-checkbox>
 
-                            <b-form-checkbox id="glutenFree" v-model="status" name="checkbox-3" value=1
+                            <b-form-checkbox id="glutenFree" v-model="$v.form.glutenFree.$model" name="checkbox-3" value=1
                                 unchecked-value=0>
                                 Gluten Free
                             </b-form-checkbox>
-
 
                         <b-form-group id="input-group-ingredients" label-cols-sm="3" label="Ingredients:"
                             label-for="ingredients">
@@ -107,23 +105,10 @@
                                 numOfServings should be numeric
                             </b-form-invalid-feedback>
                         </b-form-group>
-
-
-
-
-
-
-                        <!-- <b-button type="reset" variant="danger">Reset</b-button>
-                        <b-button type="submit" variant="primary" style="width:250px;" class="ml-5 w-75">Create New Recipe
-                        </b-button> -->
                     </b-form>
                     <b-alert class="mt-2" v-if="form.submitError" variant="warning" dismissible show>
                         Create new recipe failed: {{ form.submitError }}
                     </b-alert>
-                    <!-- <b-card class="mt-3 md-3" header="Form Data Result">
-      <pre class="m-0"><strong>form:</strong> {{ form }}</pre>
-      <pre class="m-0"><strong>$v.form:</strong> {{ $v.form }}</pre>
-    </b-card> -->
                 </div>
             </b-modal>
         </div>
@@ -135,7 +120,6 @@ import {
     minLength,
     alpha,
     numeric,
-    // alphaNum,
     url
 } from "vuelidate/lib/validators";
 
@@ -180,11 +164,9 @@ export default {
             },
             ingredients: {
                 required,
-                // alphaNum
             },
             instructions: {
                 required,
-                // alphaNum
             },
             numOfServings: {
                 required,
@@ -193,9 +175,6 @@ export default {
         }
     },
     mounted() {
-        // console.log("mounted");
-        // this.countries.push(...countries);
-        // console.log($v);
     },
     methods: {
         validateState(param) {
@@ -206,7 +185,6 @@ export default {
             try {
                 const response = await this.axios.post(
                     this.$root.store.server_domain + "/users/myRecipes", 
-
                     {
                         title: this.form.title,
                         readyInMinutes: this.form.readyInMinutes,
