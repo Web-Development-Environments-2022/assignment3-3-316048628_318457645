@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+<<<<<<< HEAD
     <!-- <div id="nav"> -->
     <!-- <router-link :to="{ name: 'main' }">Vue Recipes</router-link> |
       <router-link :to="{ name: 'search' }">Search</router-link> |
@@ -49,6 +50,23 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+=======
+    <div id="nav">
+      <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
+      <router-link :to="{ name: 'search' }">Search</router-link>|
+      <router-link :to="{ name: 'favorites' }">My Favorites</router-link>
+      {{ !$root.store.username }}
+      <span v-if="!$root.store.username">
+        Guest:
+        <router-link :to="{ name: 'register' }">Register</router-link>|
+        <router-link :to="{ name: 'login' }">Login</router-link>|
+      </span>
+      <span v-else>
+        {{ $root.store.username }}: <button @click="Logout">Logout</button>|
+        {{ $root.store.username }}: <CreateRecipeModal title="Create Recipe" />|
+        {{ $root.store.username }}: <router-link :to="{ name: 'favorites' }">My Favorites</router-link>
+      </span>
+>>>>>>> 42daaf9196c11906108f99e0f2f52b7ea354f204
     </div>
     <router-view />
   </div>
