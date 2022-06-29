@@ -1,7 +1,7 @@
 <template>
     <div class="container mt-5">
-        <div>
-            <b-button v-b-modal.modal-center>Create New Recipe</b-button>
+        <div id="createRecipeModal">
+            <!-- <b-button v-b-modal.modal-center>Create New Recipe</b-button> -->
             <b-modal id="modal-center" centered title="Create New Recipe" ok-title="Create Recipe" cancel-title="Reset" @ok.prevent="onCreate" @cancel.prevent="onReset">
                 <div class="my-4">
                     <b-form >
@@ -55,16 +55,16 @@
                                 Popularity should be numeric
                             </b-form-invalid-feedback>
                         </b-form-group>
-                            <b-form-checkbox id="checkbox-vegan" v-model="$v.form.vegan.$model" name="checkbox-1" value=1
+                            <b-form-checkbox id="checkbox-vegan" v-model="$v.form.vegan" name="checkbox-1" value=1
                                 unchecked-value=0>
                                 Vegan
                             </b-form-checkbox>
-                            <b-form-checkbox id="vegetarian" v-model="$v.form.vegetarian.$model" name="checkbox-2" value=1
+                            <b-form-checkbox id="vegetarian" v-model="$v.form.vegetarian" name="checkbox-2" value=1
                                 unchecked-value=0>
                                 Vegetarian
                             </b-form-checkbox>
 
-                            <b-form-checkbox id="glutenFree" v-model="$v.form.glutenFree.$model" name="checkbox-3" value=1
+                            <b-form-checkbox id="glutenFree" v-model="$v.form.glutenFree" name="checkbox-3" value=1
                                 unchecked-value=0>
                                 Gluten Free
                             </b-form-checkbox>
@@ -228,7 +228,7 @@ export default {
             this.$nextTick(() => {
                 this.$v.$reset();
             });
-        }
+        },
     }
 };
 </script>

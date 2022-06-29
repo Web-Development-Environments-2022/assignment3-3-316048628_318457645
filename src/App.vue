@@ -1,18 +1,54 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
-      <router-link :to="{ name: 'search' }">Search</router-link>|
-      {{ !$root.store.username }}
-      <span v-if="!$root.store.username">
-        Guest:
-        <router-link :to="{ name: 'register' }">Register</router-link>|
-        <router-link :to="{ name: 'login' }">Login</router-link>|
+    <!-- <div id="nav"> -->
+    <!-- <router-link :to="{ name: 'main' }">Vue Recipes</router-link> |
+      <router-link :to="{ name: 'search' }">Search</router-link> |
+      <router-link :to="{ name: 'about' }">About</router-link> | -->
+
+    <!-- <span v-if="!$root.store.username">
+        <router-link :to="{ name: 'register' }">Register</router-link> |
+        <router-link :to="{ name: 'login' }">Login</router-link> |
+        Hello Guest
       </span>
       <span v-else>
-        {{ $root.store.username }}: <button @click="Logout">Logout</button>|
-        {{ $root.store.username }}: <CreateRecipeModal title="Create Recipe" />|
-      </span>
+        {{ $root.store.username }}: <button @click="Logout">Logout</button> |
+        {{ $root.store.username }}: <CreateRecipeModal title="Create Recipe" /> |
+        {{ $root.store.username }}: Hello , {{ $root.store.username }} |
+      </span> -->
+    <!-- </div> -->
+
+    <div id="nav">
+      <b-navbar class="navbar navbar-dark bg-white" toggleable="lg" type="white" variant="info">
+      <b-navbar-brand :to="{ name: 'main' }">Main </b-navbar-brand>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+        <b-nav-item :to="{ name: 'search' }">Search</b-nav-item>
+          <b-nav-item :to="{ name: 'about' }">About</b-nav-item>
+        </b-navbar-nav>
+        <b-navbar-nav v-if="$root.store.username">
+          <b-nav-item-dropdown>
+          <template #button-content>Personal </template>
+          <b-dropdown-item :to="{ name: 'favorites' }">My Favorites</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'myRecipes' }">My Recipes</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'familyRecipes' }">My Family Recipes</b-dropdown-item>
+        </b-nav-item-dropdown>
+          <b-nav-item ref="CreateRecipeModal" @click="OpenModal" v-b-modal.modal-center>Create Recipe
+            <CreateRecipeModal v-if="showModal"/>
+          </b-nav-item>
+        </b-navbar-nav>
+        <b-navbar-nav class="ml-auto" v-if="$root.store.username">
+                  <b-nav-item-dropdown right>
+                  <template #button-content>{{$root.store.username}}</template>
+                  <b-dropdown-item href="#" @click="Logout">Log Out</b-dropdown-item>
+        </b-nav-item-dropdown>
+        </b-navbar-nav>
+        <b-navbar-nav class="ml-auto" v-else>
+        <b-navbar-brand> Hello guest </b-navbar-brand>
+          <b-nav-item :to="{ name: 'login' }">Login</b-nav-item>
+          <b-nav-item :to="{ name: 'register' }">Register</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
     </div>
     <router-view />
   </div>
@@ -22,21 +58,29 @@
 import CreateRecipeModal from "./components/CreateRecipeModal.vue";
 
 export default {
-  name: "App",
-  methods: {
-    Logout() {
-      this.$root.store.logout();
-      this.$root.toast("Logout", "User logged out successfully", "success");
+    name: "App",
+    data(){
+        return {
+          showModal: false
+        }
+    },
+    methods: {
+        Logout() {
+            this.$root.store.logout();
+            this.$root.toast("Logout", "User logged out successfully", "success");
+            this.$router.push("/").catch(() => {
+                this.$forceUpdate();
+            });
+        },
+        OpenModal() {
 
-      this.$router.push("/").catch(() => {
-        this.$forceUpdate();
-      });
+          this.showModal = true
+
+        }
+    },
+    components: { 
+      CreateRecipeModal 
     }
-  },
-  components: {
-    CreateRecipeModal
-}
-  
 };
 </script>
 
