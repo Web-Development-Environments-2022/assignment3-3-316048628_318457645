@@ -1,11 +1,12 @@
 import Vue from "vue";
 import App from "./App.vue";
 import VueAxios from "vue-axios";
+import VueCookies from "vue-cookies";
 import axios from "axios";
-
 import routes from "./routes";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
+Vue.use(VueCookies);
 const router = new VueRouter({
   routes,
 });
@@ -24,6 +25,7 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin,
+  BootstrapVue,
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -38,6 +40,7 @@ import {
   LayoutPlugin,
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
+Vue.use(BootstrapVue);
 
 axios.interceptors.request.use(
   function(config) {
@@ -83,12 +86,19 @@ const shared_data = {
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
 
+Vue.component(("modal", {
+  template: "#modal-template"
+}));
+
 new Vue({
   router,
   data() {
     return {
       store: shared_data,
+      showCreateModal: false
+
     };
+
   },
   methods: {
     toast(title, content, variant = null, append = false) {

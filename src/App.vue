@@ -11,6 +11,7 @@
       </span>
       <span v-else>
         {{ $root.store.username }}: <button @click="Logout">Logout</button>|
+        {{ $root.store.username }}: <CreateRecipeModal title="Create Recipe" />|
       </span>
     </div>
     <router-view />
@@ -18,6 +19,8 @@
 </template>
 
 <script>
+import CreateRecipeModal from "./components/CreateRecipeModal.vue";
+
 export default {
   name: "App",
   methods: {
@@ -29,7 +32,11 @@ export default {
         this.$forceUpdate();
       });
     }
-  }
+  },
+  components: {
+    CreateRecipeModal
+}
+  
 };
 </script>
 

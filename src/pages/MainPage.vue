@@ -13,20 +13,20 @@
       }"
       disabled
     ></RecipePreviewList>
-    <!-- <div
+    <div
       style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
     >
-      Centeredasdasdad
-    </div>-->
+    </div>
   </div>
 </template>
 
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
+import CreateRecipeModal from "../components/CreateRecipeModal.vue";
 export default {
   components: {
-    RecipePreviewList
-  }
+    RecipePreviewList,
+}
 };
 </script>
 
