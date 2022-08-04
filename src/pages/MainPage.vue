@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1 class="title">Main Page</h1>
-    <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" />
+    <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" :recipes="getRandom" />
     <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
     {{ !$root.store.username }}
     <RecipePreviewList
@@ -12,6 +12,7 @@
         center: true
       }"
       disabled
+      :recipes="getLastViewed"
     ></RecipePreviewList>
     <div
       style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
@@ -26,6 +27,35 @@ import CreateRecipeModal from "../components/CreateRecipeModal.vue";
 export default {
   components: {
     RecipePreviewList,
+},
+methods:{
+  getRandom(){
+    try {
+        const response = await this.axios.get(
+          this.$root.store.server_domain + "/recipes/random",
+        );
+        console.log(response);
+        const recipes = response.data.recipes;
+        return recipes;
+      } catch (error) {
+        console.log(error);
+      }
+  },
+  getLastViewed(){
+    if($root.store.username){
+      try {
+          const response = await this.axios.get(
+            this.$root.store.server_domain + "/users/lastWatched",
+          );
+          console.log(response);
+          const recipes = response.data.recipes;
+          return recipes;
+        } catch (error) {
+          console.log(error);
+        }
+    }
+  }
+
 }
 };
 </script>
