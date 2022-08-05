@@ -55,16 +55,16 @@
                                 Popularity should be numeric
                             </b-form-invalid-feedback>
                         </b-form-group>
-                            <b-form-checkbox id="checkbox-vegan" v-model="$v.form.vegan" name="checkbox-1" value=1
+                            <b-form-checkbox id="checkbox-vegan" v-model="veganRes" name="checkbox-1" value=1
                                 unchecked-value=0>
                                 Vegan
                             </b-form-checkbox>
-                            <b-form-checkbox id="vegetarian" v-model="$v.form.vegetarian" name="checkbox-2" value=1
+                            <b-form-checkbox id="vegetarian" v-model="vegetarianRes" name="checkbox-2" value=1
                                 unchecked-value=0>
                                 Vegetarian
                             </b-form-checkbox>
 
-                            <b-form-checkbox id="glutenFree" v-model="$v.form.glutenFree" name="checkbox-3" value=1
+                            <b-form-checkbox id="glutenFree" v-model="glutenFreeRes" name="checkbox-3" value=1
                                 unchecked-value=0>
                                 Gluten Free
                             </b-form-checkbox>
@@ -140,9 +140,43 @@ export default {
                 numOfServings: ""
             },
             errors: [],
-            validated: false
+            validated: false,
+            modalShow : false,
         };
     },
+    computed:{
+    glutenFreeRes: {get(){
+      return this.form.glutenFree
+    },
+    set(value){
+      if(this.glutenFree!==0)
+      {
+        this.form.glutenFree = value
+      }
+    },
+  },
+  vegetarianRes: {get(){
+      return this.form.vegetarian
+    },
+    set(value){
+      if(this.vegetarian!==0)
+      {
+        this.form.vegetarian = value
+      }
+    },
+  },
+  veganRes: {get(){
+      return this.form.vegan
+    },
+    set(value){
+      if(this.vegan!==0)
+      {
+        this.form.vegan = value
+      }
+    },
+  },
+    },
+
     validations: {
         form: {
             title: {
@@ -198,7 +232,8 @@ export default {
                         numOfServings: this.form.numOfServings
                     },
                 );
-                this.$router.push("/users/myRecipes");
+                this.$router.push("/myRecipes");
+
                 // console.log(response);
             } catch (err) {
                 console.log(err.response);
@@ -211,7 +246,8 @@ export default {
                 return;
             }
             this.CreateRecipe();
-        },
+            this.$emit('close-modal');
+                  },
         onReset() {
             this.form = {
                 title: "",

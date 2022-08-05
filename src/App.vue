@@ -33,7 +33,7 @@
           <b-dropdown-item :to="{ name: 'familyRecipes' }">My Family Recipes</b-dropdown-item>
         </b-nav-item-dropdown>
           <b-nav-item ref="CreateRecipeModal" @click="OpenModal" v-b-modal.modal-center>Create Recipe
-            <CreateRecipeModal v-if="showModal"/>
+            <CreateRecipeModal v-if="showModal" @close-modal="closeModal"/>
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-if="$root.store.username">
@@ -76,6 +76,10 @@ export default {
 
           this.showModal = true
 
+        },
+        closeModal()
+        {
+          this.showModal = false
         }
     },
     components: { 
