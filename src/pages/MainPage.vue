@@ -22,7 +22,6 @@
 
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
-import CreateRecipeModal from "../components/CreateRecipeModal.vue";
 export default {
   components: {
     RecipePreviewList,
