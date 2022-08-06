@@ -38,23 +38,23 @@ mounted() {
     this.updateRecipes();
   },
   methods: {
-    // async updateRecipes() {
-    //   try {
-    //     const response = await this.axios.get(
-    //       this.$root.store.server_domain + "/recipes/random",
-    //       // "http://localhost:3000/recipes/random",
-    //     );
+    async updateRecipes() {
+      try {
+        const response = await this.axios.get(
+          this.$root.store.server_domain + "/recipes/random",
+          // "http://localhost:3000/recipes/random",
+        );
 
-    //     console.log(response);
-    //     const recipes = response.data.recipes;
-    //     this.recipes = [];
-    //     this.recipes.push(...recipes);
-    //     // console.log(this.recipes);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
-    saveSeen(recipeId) {
+        console.log(response);
+        const recipes = response.data.recipes;
+        this.recipes = [];
+        this.recipes.push(...recipes);
+        // console.log(this.recipes);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async saveSeen(recipeId) {
           //check if user connected
           if($root.store.username){
             //send post request to save lastSeen
