@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1 class="title">Main Page</h1>
-    <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" :recipes="getRandom" />
+    <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" :recipes="randomRecipes" />
     <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
     {{ !$root.store.username }}
     <RecipePreviewList
@@ -12,7 +12,7 @@
         center: true
       }"
       disabled
-      :recipes="getLastViewed"
+      :recipes="lastViewedRecipes"
     ></RecipePreviewList>
     <div
       style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
@@ -24,23 +24,30 @@
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
 export default {
+  data() {
+    return {
+      randomRecipes : [],
+      lastViewedRecipes : []
+
+    }
+
+  },
   components: {
     RecipePreviewList,
 },
-methods:{
-  async getRandom(){
-    try {
+async mounted()
+{     
+  try {
         const response = await this.axios.get(
           this.$root.store.server_domain + "/recipes/random",
         );
         console.log(response);
         const recipes = response.data.recipes;
-        return recipes;
+        this.randomRecipes = recipes;
       } catch (error) {
         console.log(error);
       }
-  },
-  async getLastViewed(){
+
     if($root.store.username){
       try {
           const response = await this.axios.get(
@@ -48,13 +55,13 @@ methods:{
           );
           console.log(response);
           const recipes = response.data.recipes;
-          return recipes;
+          this.lastViewedRecipes = recipes;
         } catch (error) {
           console.log(error);
         }
-    }
+      
+    
   }
-
 }
 };
 </script>

@@ -6,7 +6,7 @@
     </h3>
     <b-row>
       <b-col v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" @click='saveSeen(r.id)'/>
+        <RecipePreview class="recipePreview" :recipe="r" @click='saveSeen(r.id)'/> //**check if it should be clicking on component or inside component
       </b-col>
     </b-row>
   </b-container>
@@ -35,25 +35,25 @@ export default {
     };
   },
 mounted() {
-    this.updateRecipes();
+    // this.updateRecipes();
   },
   methods: {
-    async updateRecipes() {
-      try {
-        const response = await this.axios.get(
-          this.$root.store.server_domain + "/recipes/random",
-          // "http://localhost:3000/recipes/random",
-        );
+    // async updateRecipes() {
+    //   try {
+    //     const response = await this.axios.get(
+    //       this.$root.store.server_domain + "/recipes/random",
+    //       // "http://localhost:3000/recipes/random",
+    //     );
 
-        console.log(response);
-        const recipes = response.data.recipes;
-        this.recipes = [];
-        this.recipes.push(...recipes);
-        // console.log(this.recipes);
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    //     console.log(response);
+    //     const recipes = response.data.recipes;
+    //     this.recipes = [];
+    //     this.recipes.push(...recipes);
+    //     // console.log(this.recipes);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
     async saveSeen(recipeId) {
           //check if user connected
           if($root.store.username){
