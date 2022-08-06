@@ -28,7 +28,7 @@ export default {
     RecipePreviewList,
 },
 methods:{
-  getRandom(){
+  async getRandom(){
     try {
         const response = await this.axios.get(
           this.$root.store.server_domain + "/recipes/random",
@@ -40,7 +40,7 @@ methods:{
         console.log(error);
       }
   },
-  getLastViewed(){
+  async getLastViewed(){
     if($root.store.username){
       try {
           const response = await this.axios.get(

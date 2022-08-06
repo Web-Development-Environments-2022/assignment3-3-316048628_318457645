@@ -1,4 +1,5 @@
 <template>
+<div>
   <router-link
     :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
     class="recipe-preview"
@@ -14,20 +15,45 @@
         <li>{{ recipe.readyInMinutes }} minutes</li>
         <li>{{ recipe.aggregateLikes }} likes</li>
       </ul>
+      <div>
+      </div>
     </div>
   </router-link>
+  <div>
+    <button :class="already_in_fav" v-if="$root.store.username"  @click="AddToFav">Add To Favorite</button>
+  </div>
+  </div>
 </template>
 
 <script>
 export default {
-  mounted() {
+  async mounted() {
     this.axios.get(this.recipe.image).then((i) => {
       this.image_load = true;
     });
+      try {
+        const response = await this.axios.get(
+          this.$root.store.server_domain + "/users/favorites",
+          // "http://localhost:3000/recipes/random",
+        );
+
+        console.log(response);
+        const recipes = response.data.recipes;
+        this.recipes = [];
+        this.recipes.push(...recipes);
+        if(this.recipes.indexof(this.recipe) !== -1)
+          {
+              this.already_in_fav = "true";
+          }
+        // console.log(this.recipes);
+      } catch (error) {
+        console.log(error);
+      }
   },
   data() {
     return {
-      image_load: false
+      image_load: false,
+      already_in_fav : "false"
     };
   },
   props: {
@@ -35,6 +61,7 @@ export default {
       type: Object,
       required: true
     }
+
 
     // id: {
     //   type: Number,
@@ -59,6 +86,26 @@ export default {
     //     return undefined;
     //   }
     // }
+  },
+  methods:
+  {
+  async AddToFav(){
+      //send post request to save favorite recipe
+      if(this.recipe != 'undefined')
+      // console.log(this.$root.store.server_domain);
+      // console.log(this.recipe);
+      {
+      const response = await this.axios.post(
+      this.$root.store.server_domain +"/users/favorites",
+      {
+          //the recipe id in body req
+          recipe_id : this.recipe.id
+      },
+  );
+      }
+      
+  }
+
   }
 };
 </script>
@@ -137,5 +184,13 @@ export default {
   width: 90px;
   display: table-cell;
   text-align: center;
+}
+
+.false {
+    color: aqua;
+}
+.true {
+    color:blueviolet;
+
 }
 </style>
