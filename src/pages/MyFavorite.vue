@@ -1,47 +1,40 @@
 <template>
-  <b-container>
+<div>
     <h3>
       Favorites
     </h3>
-    <b-row>
-      <b-col v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" />
-      </b-col>
-    </b-row>
-  </b-container>
+    <Grid title="Favorite Recipes" class="FavoriteRecipes center" :recipes="recipes" :recipeTemplate="recipeTemplate" ></Grid>
+</div>
 </template>
 
 <script>
-import RecipePreview from "../components/RecipePreview.vue";
+import Grid from "../components/Grid";
 export default {
   name: "Favorites",
   components: {
-    RecipePreview
+    Grid
   },
   data() {
     return {
-      recipes: []
+      recipes: [],
+      recipeTemplate: "ourDB"
     };
   },
-  mounted() {
-    this.updateRecipes();
-  },
-  methods: {
-    async updateRecipes() {
-      try {
+  async mounted() {
+    try {
         const response = await this.axios.get(
-          this.$root.store.server_domain + "/users/favorites",
-          // "http://localhost:3000/recipes/random",
+          this.$root.store.server_domain + "/users/favorites"
         );
-
         console.log(response);
         const recipes = response.data;
         this.recipes = [];
         this.recipes.push(...recipes);
-      } catch (error) {
-        console.log(error);
+        // return response;
       }
-    }
+      catch (err) {
+        console.log(err.response);
+        this.form.submitError = err.response.data.message;
+      } 
   }
 };
 </script>

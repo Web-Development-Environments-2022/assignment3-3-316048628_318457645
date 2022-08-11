@@ -4,19 +4,19 @@
       Family Recipes
     </h3>
     <b-row>
-      <b-col v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" />
+      <b-col v-for="r in recipes" :key="r.recipe_id">
+        <FamilyRecipePreview class="recipePreview" :recipe="r" />
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
-import RecipePreview from "../components/RecipePreview.vue";
+import FamilyRecipePreview from "../components/FamilyRecipePreview.vue";
 export default {
   name: "Family",
   components: {
-    RecipePreview
+    FamilyRecipePreview
   },
   data() {
     return {
@@ -38,6 +38,7 @@ export default {
         const recipes = response.data;
         this.recipes = [];
         this.recipes.push(...recipes);
+        console.log(this.recipes);
       } catch (error) {
         console.log(error);
       }

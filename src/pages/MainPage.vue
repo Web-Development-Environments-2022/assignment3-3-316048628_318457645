@@ -1,10 +1,23 @@
 <template>
-  <div class="container">
+
+
+  <b-container class="container">
+    <b-row>
+      <h3 v-if="!$root.store.username" >Hello Guest</h3>
+      </b-row>
+      <b-row>
+    <b-col>
     <h1 class="title">Main Page</h1>
     <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" :recipes="randomRecipes" />
-    <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
-    {{ !$root.store.username }}
-    <RecipePreviewList
+    <div >
+  
+      <b-button @click="GetRandom">More</b-button>
+    </div>
+    </b-col>
+    <b-col>
+    <!-- <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link> -->
+    <!-- {{ !$root.store.username }} -->
+      <RecipePreviewList v-if="$root.store.username"
       title="Last Viewed Recipes"
       :class="{
         RandomRecipes: true,
@@ -13,16 +26,23 @@
       }"
       disabled
       :recipes="lastViewedRecipes"
-    ></RecipePreviewList>
+    >  </RecipePreviewList>
+    <Login v-else>
+
+    </Login>
+    </b-col>
     <div
       style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
     >
     </div>
-  </div>
+    </b-row>
+</b-container>
 </template>
 
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
+import Login from "../components/Login";
+
 export default {
   data() {
     return {
@@ -34,34 +54,49 @@ export default {
   },
   components: {
     RecipePreviewList,
+    Login
 },
-async mounted()
+mounted()
 {     
+  this.GetRandom();
+  this.GetLastWathced();
+}
+,
+methods:
+{
+  async GetRandom(){
   try {
+        // console.log(this.$root.store.server_domain);
         const response = await this.axios.get(
           this.$root.store.server_domain + "/recipes/random",
         );
         console.log(response);
         const recipes = response.data.recipes;
-        this.randomRecipes = recipes;
+        // this.randomRecipes = recipes;
+        this.randomRecipes = [];
+        this.randomRecipes.push(...recipes);
+
       } catch (error) {
         console.log(error);
       }
-
-    if($root.store.username){
+  },
+  async GetLastWathced(){
+    
+    if(this.$root.store.username){
       try {
+        console.log("last watched");
           const response = await this.axios.get(
             this.$root.store.server_domain + "/users/lastWatched",
           );
           console.log(response);
           const recipes = response.data.recipes;
-          this.lastViewedRecipes = recipes;
+          this.lastViewedRecipes = [];
+          this.lastViewedRecipes.push(...recipes);
         } catch (error) {
           console.log(error);
         }
-      
-    
   }
+}
 }
 };
 </script>
@@ -78,4 +113,8 @@ async mounted()
   pointer-events: none;
   cursor: default;
 }
+#h3 {
+  text-align: left;
+}
+
 </style>

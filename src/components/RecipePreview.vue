@@ -1,13 +1,17 @@
 <template>
 <div>
+  <b-container>
   <router-link
     :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
     class="recipe-preview"
   >
-    <div class="recipe-body">
-      <img v-if="image_load" :src="recipe.image" class="recipe-image" />
+  <b-row>
+ <div class="recipe-body">
+      <img :src="recipe.image" class="recipe-image" />
     </div>
-    <div class="recipe-footer">
+  </b-row>
+   <b-row>
+<div class="recipe-footer">
       <div :title="recipe.title" class="recipe-title">
         {{ recipe.title }}
       </div>
@@ -18,30 +22,30 @@
       <div>
       </div>
     </div>
+   </b-row>
+    
   </router-link>
-  <div>
-    <button :class="already_in_fav" v-if="$root.store.username"  @click="AddToFav">Add To Favorite</button>
+  </b-container>
+    <b-button id="favbutton" v-if="$root.store.username" @click="AddToFav"><b-icon icon="star-fill" :class="already_in_fav"></b-icon> </b-button>
+    <!-- <button :class="already_in_fav" v-if="$root.store.username"  @click="AddToFav">Add To Favorite</button> -->
   </div>
-  </div>
+ 
 </template>
 
 <script>
 export default {
   async mounted() {
-    this.axios.get(this.recipe.image).then((i) => {
-      this.image_load = true;
-    });
+
       try {
         const response = await this.axios.get(
           this.$root.store.server_domain + "/users/favorites",
           // "http://localhost:3000/recipes/random",
         );
-
         console.log(response);
         const recipes = response.data.recipes;
-        this.recipes = [];
-        this.recipes.push(...recipes);
-        if(this.recipes.indexof(this.recipe) !== -1)
+        recipes = [];
+        recipes.push(...recipes);
+        if(recipes.indexof(this.recipe) !== -1)
           {
               this.already_in_fav = "true";
           }
@@ -52,7 +56,7 @@ export default {
   },
   data() {
     return {
-      image_load: false,
+      // image_load: false,
       already_in_fav : "false"
     };
   },
@@ -60,7 +64,8 @@ export default {
     recipe: {
       type: Object,
       required: true
-    }
+    },
+
 
 
     // id: {
@@ -90,6 +95,8 @@ export default {
   methods:
   {
   async AddToFav(){
+
+      this.already_in_fav = "true";
       //send post request to save favorite recipe
       if(this.recipe != 'undefined')
       // console.log(this.$root.store.server_domain);
@@ -186,11 +193,15 @@ export default {
   text-align: center;
 }
 
-.false {
-    color: aqua;
-}
 .true {
-    color:blueviolet;
+    color: yellow;
+}
+.true:hover {
+    color: yellow;
+}
+.false {
+    color:white;
 
 }
+
 </style>

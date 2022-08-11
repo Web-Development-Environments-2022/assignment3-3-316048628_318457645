@@ -1,21 +1,40 @@
 <template>
-  <b-container>
+  <b-container class="container">
     <h3>
       {{ title }}:
       <slot></slot>
     </h3>
-    <b-col>
-      <b-row v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" @click.native='saveSeen(r.id)'/> 
-      </b-row>
-    </b-col>
+    <div v-if="recipeTemplate==='ourDB'">
+    <b-row align-h="around" v-for="i in Math.ceil(recipes.length / 5)" :key="i">
+      <b-col  v-for="r in recipes.slice((i - 1) * 5, i * 5)" :key="r.recipe_id">
+        <!-- <RecipePreview class="recipePreview" :recipe="r" @click.native='saveSeen(r.id)'/> -->
+        <RecipePreview class="recipePreview" :recipe="r" />
+      </b-col>
+    </b-row>
+    </div>
+    <div v-else>
+    <b-row align-h="around" v-for="i in Math.ceil(recipes.length / 5)" :key="i">
+      <b-col v-for="r in recipes.slice((i - 1) * 5, i * 5)" :key="r.id">
+        <!-- <RecipePreview class="recipePreview" :recipe="r" @click.native='saveSeen(r.id)'/> -->
+        <RecipePreview class="recipePreview" :recipe="r" />
+      </b-col>
+    </b-row>
+
+    </div>
+    
   </b-container>
 </template>
+<!-- 
+  <div class="row" v-for="i in Math.ceil(items.length / 5)">
+    <span v-for="item in items.slice((i - 1) * 5, i * 5)">
+      {{item}}
+    </span>
+  </div> -->
 
 <script>
 import RecipePreview from "./RecipePreview";
 export default {
-  name: "RecipePreviewList",
+  name: "Grid",
   components: {
     RecipePreview
   },
@@ -28,6 +47,11 @@ export default {
       type: Array,
       required: true
     },
+    recipeTemplate:{
+      type: String,
+      required: true
+    }
+
   },
   data() {
     return {
@@ -56,14 +80,13 @@ mounted() {
     // },
     async saveSeen(recipeId) {
           //check if user connected
-          console.log("in save seen");
           if(this.$root.store.username){
             //send post request to save lastSeen
             const response = await this.axios.post(
             this.$root.store.server_domain +"/users/lastWatched",
             {
                 //the recipe id in body req
-                recipe_id : recipeId
+                recipeId : recipeId
             },
         );
       }
@@ -74,6 +97,6 @@ mounted() {
 
 <style lang="scss" scoped>
 .container {
-  min-height: 400px;
+  width: 100%;
 }
 </style>

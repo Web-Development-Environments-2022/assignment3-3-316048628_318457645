@@ -3,34 +3,20 @@
     <div v-if="recipe">
       <div class="recipe-header mt-3 mb-4">
         <h1>{{ recipe.title }}</h1>
+        <h3>Recipe Owner: {{ recipe.recipeOwner }}</h3>
         <img :src="recipe.image" class="center" />
       </div>
       <div class="recipe-body">
         <div class="wrapper">
           <div class="wrapped">
             <div class="mb-3">
-              <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-              <div>Likes: {{ recipe.popularity }} likes</div>
+              <div>Preperation time in {{ recipe.preparationTime }}</div>
             </div>
-            Ingredients:
-            <ul>
-              <li
-                v-for="(r, index) in recipe.ingredients"
-                :key="index + '_' + r.id"
-              >
-                {{ r.original }}
-              </li>
-            </ul>
+        <div>Ingredients: {{ recipe.ingredients }}</div>
+        <div>Instructions: {{ recipe.instructions }}</div>
+
           </div>
-          <div class="wrapped">
-            Instructions:
-            <ol>
-              <li v-for="s in recipe._instructions" :key="s.number">
-                {{ s.step }}
-              </li>
-            </ol>
           </div>
-        </div>
       </div>
       <!-- <pre>
       {{ $route.params }}
@@ -54,33 +40,26 @@ export default {
       // response = this.$route.params.response;
 
       try {
-        response = await this.axios.get(
-          // "https://test-for-3-2.herokuapp.com/recipes/info",
-          this.$root.store.server_domain + "/recipes/fullDetails/" + this.$route.params.recipeId,
-        );
+        this.recipe = this.$route.params.recipe;
 
         // console.log("response.status", response.status);
-        if (response.status !== 200) this.$router.replace("/NotFound");
       } catch (error) {
         console.log("error.response.status", error.response.status);
         this.$router.replace("/NotFound");
         return;
       }
-      console.log("the response is: ",response);
+      console.log("the response is: ",this.recipe);
 
       let {
         id,
         title,
+        recipeOwner,
         readyInMinutes,
         image,
-        popularity,
-        vegan,
-        vegetarian,
-        glutenFree,
         ingredients,
         instructions,
-        numOfServing
-      } = response.data;
+        user_id
+      } = this.recipe;
 
       let _instructions = instructions
         .map((fstep) => {
@@ -92,15 +71,12 @@ export default {
       let _recipe = {
         id,
         title,
+        recipeOwner,
         readyInMinutes,
         image,
-        popularity,
-        vegan,
-        vegetarian,
-        glutenFree,
         ingredients,
-        _instructions,
-        numOfServing
+        instructions,
+        user_id
       };
       console.log(_recipe);
 

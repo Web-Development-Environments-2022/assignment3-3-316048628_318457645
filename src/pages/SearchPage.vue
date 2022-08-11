@@ -2,8 +2,8 @@
 <div>
   <div class="container">
     <h1 class="title">Search Page</h1>
-
-    <b-form @submit.prevent="onSearch" @reset.prevent="onReset">
+    <b-container class="form">
+      <b-form @submit.prevent="onSearch" @reset.prevent="onReset">
       <b-form-group id="input-group-queryS" label-cols-sm="3" label="Query to search:" label-for="queryS">
         <b-form-input id="queryS" v-model="$v.form.queryS.$model" type="text" :state="validateState('queryS')">
         </b-form-input>
@@ -41,26 +41,20 @@
       <b-button type="reset" variant="danger">Reset</b-button>
       <b-button type="submit" variant="primary" style="width:250px;" class="ml-5 w-75">Search</b-button>
     </b-form>
+
+      
+    </b-container>
+    
   </div>
    
-    <div id="results-container">
-      <b-container>
-    <h3>
-    Search Results
-    </h3>
-    <b-row>
-      <b-col v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" />
-      </b-col>
-    </b-row>
-  </b-container>
-
+    <div class="search-res">
+        <Grid :title="SearchResults" :recipes="recipes" :recipeTemplate="recipeTemplate"/>
     </div>
   </div>
 </template>
 
 <script>
-import RecipePreview from "../components/RecipePreview.vue";
+import Grid from "../components/Grid";
 
 import dietOptions from "../assets/dietOptions";
 import intolerances from "../assets/intolerances";
@@ -71,8 +65,8 @@ import {
 
 export default {
   name: "Search",
-    components: {
-    RecipePreview
+  components: {
+    Grid
   },
   data() {
     return {
@@ -96,7 +90,8 @@ export default {
       ],
 
       errors: [],
-      validated: false
+      validated: false,
+      recipeTemplate: "app"
     };
   },
   computed:{
@@ -206,6 +201,11 @@ myIntolerance: {get(){
 </script>
 <style lang="scss" scoped>
 .container {
+}
+.search-res {
+  width: 130%;
+}
+.form{
   max-width: 500px;
 }
 </style>
