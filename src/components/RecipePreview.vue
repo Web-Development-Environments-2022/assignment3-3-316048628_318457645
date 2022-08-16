@@ -16,8 +16,11 @@
         {{ recipe.title }}
       </div>
       <ul class="recipe-overview">
-        <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes }} likes</li>
+        <li> <b-icon icon="clock" ></b-icon> {{ recipe.readyInMinutes }}</li>
+        <li> <b-icon icon="hand-thumbs-up" ></b-icon> {{ recipe.aggregateLikes }}</li>
+        <li v-if="seen">already seen : <b-icon icon="eye-slash" ></b-icon></li>
+        <li v-else>already seen : <b-icon icon="eye" ></b-icon></li>
+
       </ul>
       <div>
       </div>
@@ -26,38 +29,26 @@
     
   </router-link>
   </b-container>
-    <b-button id="favbutton" v-if="$root.store.username" @click="AddToFav"><b-icon icon="star-fill" :class="already_in_fav"></b-icon> </b-button>
+    <b-button id="favbutton" v-if="$root.store.username" @click="AddToFav"><b-icon v-if="already_in_fav" icon="star-fill" style="color:yellow;"></b-icon> <b-icon icon="star-fill" v-else style="color:white;"></b-icon> </b-button>
+
     <!-- <button :class="already_in_fav" v-if="$root.store.username"  @click="AddToFav">Add To Favorite</button> -->
   </div>
  
 </template>
 
 <script>
-export default {
-  async mounted() {
+import { Console } from 'console';
 
-      try {
-        const response = await this.axios.get(
-          this.$root.store.server_domain + "/users/favorites",
-          // "http://localhost:3000/recipes/random",
-        );
-        console.log(response);
-        const recipes = response.data.recipes;
-        recipes = [];
-        recipes.push(...recipes);
-        if(recipes.indexof(this.recipe) !== -1)
-          {
-              this.already_in_fav = "true";
-          }
-        // console.log(this.recipes);
-      } catch (error) {
-        console.log(error);
-      }
+export default {
+  mounted() {
+    this.CheckIfAlreadySeen();
+    this.CheckIfAlreadyInFav();
   },
   data() {
     return {
       // image_load: false,
-      already_in_fav : "false"
+      already_in_fav : false,
+      seen : false
     };
   },
   props: {
@@ -111,10 +102,49 @@ export default {
   );
       }
       
+  },
+  async CheckIfAlreadyInFav(){
+    try {
+        const response = await this.axios.get(
+          this.$root.store.server_domain + "/users/favorites",
+          // "http://localhost:3000/recipes/random",
+        );
+        console.log("the response in CheckIfAlreadyInFav", response);
+        const recipes = response.data;
+        const recipesId = recipes.map( r => r.id);
+        if(recipesId.includes(this.recipe.id))
+          {
+              console.log(this.recipe,"recipe is in fave list");
+              this.already_in_fav = true;
+          }
+        // console.log(this.recipes);
+      } catch (error) {
+        console.log("error in CheckIfAlreadyInFav" ,error);
+      }
+  },
+
+  async CheckIfAlreadySeen(){
+    try {
+        console.log("in CheckIfAlreadySeen, recipe id:", this.recipe.id);
+        const response = await this.axios.get(
+          this.$root.store.server_domain + "/users/lastWatched/"+ this.recipe.id );
+        console.log("the response from /users/lastWatched/recipeId: ",response);
+        const recipes = response.data;
+        if(recipes === [])
+        {
+          console.log("seen is true");
+          this.seen =true;
+        }
+
+  }
+  catch(error) {
+      console.log("error in CheckIfAlreadySeen",error);
+
   }
 
   }
-};
+}}
+;
 </script>
 
 <style scoped>
@@ -193,15 +223,6 @@ export default {
   text-align: center;
 }
 
-.true {
-    color: yellow;
-}
-.true:hover {
-    color: yellow;
-}
-.false {
-    color:white;
 
-}
 
 </style>

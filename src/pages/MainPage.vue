@@ -88,10 +88,12 @@ methods:
           const response = await this.axios.get(
             this.$root.store.server_domain + "/users/lastWatched",
           );
-          console.log(response);
-          const recipes = response.data.recipes;
+          console.log("the response of last wathced",response);
+          const recipes = response.data;
           this.lastViewedRecipes = [];
           this.lastViewedRecipes.push(...recipes);
+          console.log("lastViewedRecipes",response);
+
         } catch (error) {
           console.log(error);
         }
