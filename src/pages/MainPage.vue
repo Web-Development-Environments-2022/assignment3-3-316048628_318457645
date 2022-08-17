@@ -7,9 +7,8 @@
       </b-row>
       <b-row>
     <b-col>
-    <h1 class="title">Main Page</h1>
     <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" :recipes="randomRecipes" />
-    <div >
+    <div class="moreBtn">
   
       <b-button @click="GetRandom">More</b-button>
     </div>
@@ -58,8 +57,8 @@ export default {
 },
 mounted()
 {     
-  this.GetRandom();
-  this.GetLastWathced();
+  // this.GetRandom();
+  // this.GetLastWathced();
 }
 ,
 methods:
@@ -117,6 +116,11 @@ methods:
 }
 #h3 {
   text-align: left;
+}
+
+.moreBtn {
+  align-items: center;
+  margin-left: 40%;
 }
 
 </style>

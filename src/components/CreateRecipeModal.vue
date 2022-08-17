@@ -44,15 +44,15 @@
                             </b-form-invalid-feedback>
                         </b-form-group>
 
-                        <b-form-group id="input-group-popularity" label-cols-sm="3" label="Num of Likes:"
-                            label-for="popularity">
-                            <b-form-input id="popularity" v-model="$v.form.popularity.$model" type="text"
-                                :state="validateState('popularity')"></b-form-input>
-                            <b-form-invalid-feedback v-if="!$v.form.popularity.required">
-                                Popularity is required
+                        <b-form-group id="input-group-aggregateLikes" label-cols-sm="3" label="Num of Likes:"
+                            label-for="aggregateLikes">
+                            <b-form-input id="aggregateLikes" v-model="$v.form.aggregateLikes.$model" type="text"
+                                :state="validateState('aggregateLikes')"></b-form-input>
+                            <b-form-invalid-feedback v-if="!$v.form.aggregateLikes.required">
+                                aggregateLikes is required
                             </b-form-invalid-feedback>
-                            <b-form-invalid-feedback v-if="!$v.form.popularity.numeric">
-                                Popularity should be numeric
+                            <b-form-invalid-feedback v-if="!$v.form.aggregateLikes.numeric">
+                                aggregateLikes should be numeric
                             </b-form-invalid-feedback>
                         </b-form-group>
                             <b-form-checkbox id="checkbox-vegan" v-model="veganRes" name="checkbox-1" value=1
@@ -131,7 +131,7 @@ export default {
                 title: "",
                 readyInMinutes: "",
                 imageUrl: "",
-                popularity: "",
+                aggregateLikes: "",
                 vegan: 0,
                 vegetarian: 0,
                 glutenFree: 0,
@@ -192,7 +192,7 @@ export default {
                 required,
                 url
             },
-            popularity: {
+            aggregateLikes: {
                 required,
                 numeric
             },
@@ -223,7 +223,7 @@ export default {
                         title: this.form.title,
                         readyInMinutes: this.form.readyInMinutes,
                         imageUrl: this.form.imageUrl,
-                        popularity: this.form.popularity,
+                        aggregateLikes: this.form.aggregateLikes,
                         vegan: this.form.vegan,
                         vegetarian: this.form.vegetarian,
                         glutenFree: this.form.glutenFree,
@@ -253,7 +253,7 @@ export default {
                 title: "",
                 readyInMinutes: "",
                 imageUrl: "",
-                popularity: "",
+                aggregateLikes: "",
                 vegan: 0,
                 vegetarian: 0,
                 glutenFree: 0,

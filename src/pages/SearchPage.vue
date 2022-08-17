@@ -47,8 +47,29 @@
     
   </div>
    
-    <div class="search-res">
-        <Grid :title="SearchResults" :recipes="recipes" :recipeTemplate="recipeTemplate"/>
+    <div id="results" class="container" style="display:none;" >
+        <Grid title="Search Results" :recipes="recipes" :recipeTemplate="recipeTemplate"/>
+        <div>
+          <b-row>
+            <b-col><h3>Sort Results By : </h3></b-col>
+          <b-col>
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="preparation">
+          <label class="form-check-label" for="preparation">
+            preparation time 
+          </label>
+          <h3> </h3>
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="popularity" checked>
+          <label class="form-check-label" for="popularity">
+            popularity
+          </label>
+          </b-col>
+             <b-col>
+                <b-button @click="SortResults">Sort</b-button>
+              </b-col>
+            </b-row>
+
+             
+        </div>
     </div>
   </div>
 </template>
@@ -167,7 +188,14 @@ myIntolerance: {get(){
         const recipes = response.data;
         this.recipes = [];
         this.recipes.push(...recipes);
+        console.log("recipes search",this.recipes);
+        const recipesId = recipes.map(r => r.id);
+        const fullRecipes = [];
+        console.log("recipesId",recipesId);
+        console.log("full reci",fullRecipes);
+
         // return response;
+        document.getElementById("results").style.display = 'block';
       }
       catch (err) {
         console.log(err.response);
@@ -194,6 +222,24 @@ myIntolerance: {get(){
       this.$nextTick(() => {
         this.$v.$reset();
       });
+    },
+    SortResults(){
+      if(document.getElementById('popularity').checked)
+      {
+        let sort_recipes_likes = this.recipes.sort(function(a,b) {
+          return a.aggregateLikes - b.aggregateLikes;
+        });
+        this.recipes =sort_recipes_likes;
+        console.log("sort_recipes_likes",sort_recipes_likes);
+        // const sortRecipes = this.recipes.map(r => )
+      }
+      else{
+        let sort_recipes_minutes = this.recipes.sort(function(a,b) {
+          return a.readyInMinutes - b.readyInMinutes;
+        });
+        this.recipes =sort_recipes_minutes;
+        console.log("sort_recipes_minutes",sort_recipes_minutes);
+      }
     }
   }
 };
@@ -201,9 +247,10 @@ myIntolerance: {get(){
 </script>
 <style lang="scss" scoped>
 .container {
+  width: 100%;
 }
 .search-res {
-  width: 130%;
+  width: 100%;
 }
 .form{
   max-width: 500px;

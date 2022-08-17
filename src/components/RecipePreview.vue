@@ -1,39 +1,59 @@
 <template>
-<div>
-  <b-container>
-  <router-link
-    :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-    class="recipe-preview"
-  >
-  <b-row>
- <div class="recipe-body">
-      <img :src="recipe.image" class="recipe-image" />
-    </div>
+  <div>
+    <b-container>
+      <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" class="recipe-preview">
+        <b-row>
+          <div class="recipe-body">
+            <img :src="recipe.image" class="recipe-image" />
+          </div>
+        </b-row>
+        </router-link>
+        <b-row>
+          <b-col cols="9">
+          <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" class="recipe-preview">
+          <div class="recipe-footer">
+            <div :title="recipe.title" class="recipe-title">
+              {{ recipe.title }}
+            </div>
+        <ul class="recipe-overview">
+          <li>
+            <b-icon icon="clock"></b-icon> {{ recipe.readyInMinutes }}
+          </li>
+          <li>
+            <b-icon icon="hand-thumbs-up"></b-icon> {{ recipe.aggregateLikes }}
+          </li>
+          <li> vegan : <b-icon v-if="recipe.vegan" icon="check" style="color:white"></b-icon>
+            <b-icon v-else icon="x" style="color:white"></b-icon></li>
+            <li>vegetarian : <b-icon v-if="recipe.vegetarian"
+              icon="check" style="color:white"></b-icon>
+            <b-icon v-else icon="x" style="color:white"></b-icon></li>
+            <li>gluten free : <b-icon v-if="recipe.glutenFree"
+              icon="check" style="color:white"></b-icon>
+            <b-icon v-else icon="x" style="color:white"></b-icon>
+          </li>
+          <li v-if="(seen) && ($root.store.username)">already seen : <b-icon icon="eye"></b-icon>
+          </li>
+          <li v-else-if="(!seen) && ($root.store.username)">already seen : <b-icon icon="eye-slash"></b-icon>
+          </li>
+        </ul>
+        </div>
+</router-link>
+        </b-col>
+        <b-col>
+        <b-button variant="outline-secondary" id="favbutton" v-if="$root.store.username" @click="AddToFav">
+        <b-icon v-if="already_in_fav" icon="star-fill" style="color:yellow;"></b-icon>
+        <b-icon icon="star-fill" v-else style="color:white; outline-color: black;"></b-icon>
+      </b-button>
+      </b-col>
   </b-row>
-   <b-row>
-<div class="recipe-footer">
-      <div :title="recipe.title" class="recipe-title">
-        {{ recipe.title }}
-      </div>
-      <ul class="recipe-overview">
-        <li> <b-icon icon="clock" ></b-icon> {{ recipe.readyInMinutes }}</li>
-        <li> <b-icon icon="hand-thumbs-up" ></b-icon> {{ recipe.aggregateLikes }}</li>
-        <li v-if="seen">already seen : <b-icon icon="eye-slash" ></b-icon></li>
-        <li v-else>already seen : <b-icon icon="eye" ></b-icon></li>
 
-      </ul>
-      <div>
-      </div>
-    </div>
-   </b-row>
-    
-  </router-link>
+
+
   </b-container>
-    <b-button id="favbutton" v-if="$root.store.username" @click="AddToFav"><b-icon v-if="already_in_fav" icon="star-fill" style="color:yellow;"></b-icon> <b-icon icon="star-fill" v-else style="color:white;"></b-icon> </b-button>
 
-    <!-- <button :class="already_in_fav" v-if="$root.store.username"  @click="AddToFav">Add To Favorite</button> -->
+  <!-- <button :class="already_in_fav" v-if="$root.store.username"  @click="AddToFav">Add To Favorite</button> -->
   </div>
- 
+
 </template>
 
 <script>
@@ -47,8 +67,8 @@ export default {
   data() {
     return {
       // image_load: false,
-      already_in_fav : false,
-      seen : false
+      already_in_fav: false,
+      seen: false
     };
   },
   props: {
@@ -85,77 +105,86 @@ export default {
   },
   methods:
   {
-  async AddToFav(){
+    async AddToFav() {
 
       this.already_in_fav = "true";
       //send post request to save favorite recipe
-      if(this.recipe != 'undefined')
+      if (this.recipe != 'undefined')
       // console.log(this.$root.store.server_domain);
       // console.log(this.recipe);
       {
-      const response = await this.axios.post(
-      this.$root.store.server_domain +"/users/favorites",
-      {
-          //the recipe id in body req
-          recipe_id : this.recipe.id
-      },
-  );
+        const response = await this.axios.post(
+          this.$root.store.server_domain + "/users/favorites",
+          {
+            //the recipe id in body req
+            recipe_id: this.recipe.id
+          },
+        );
       }
-      
-  },
-  async CheckIfAlreadyInFav(){
-    try {
+
+    },
+    async CheckIfAlreadyInFav() {
+      try {
         const response = await this.axios.get(
           this.$root.store.server_domain + "/users/favorites",
           // "http://localhost:3000/recipes/random",
         );
         console.log("the response in CheckIfAlreadyInFav", response);
         const recipes = response.data;
-        const recipesId = recipes.map( r => r.id);
-        if(recipesId.includes(this.recipe.id))
-          {
-              console.log(this.recipe,"recipe is in fave list");
-              this.already_in_fav = true;
-          }
+        const recipesId = recipes.map(r => r.id);
+        if (recipesId.includes(this.recipe.id)) {
+          console.log(this.recipe, "recipe is in fave list");
+          this.already_in_fav = true;
+        }
         // console.log(this.recipes);
       } catch (error) {
-        console.log("error in CheckIfAlreadyInFav" ,error);
+        console.log("error in CheckIfAlreadyInFav", error);
       }
-  },
+    },
 
-  async CheckIfAlreadySeen(){
-    try {
+    async CheckIfAlreadySeen() {
+      try {
         console.log("in CheckIfAlreadySeen, recipe id:", this.recipe.id);
         const response = await this.axios.get(
-          this.$root.store.server_domain + "/users/lastWatched/"+ this.recipe.id );
-        console.log("the response from /users/lastWatched/recipeId: ",response);
+          this.$root.store.server_domain + "/users/lastWatched/" + this.recipe.id);
+        console.log("the response from /users/lastWatched/recipeId: ", response);
         const recipes = response.data;
-        if(recipes === [])
-        {
+        console.log("recipes[0]", recipes[0]);
+        if ((recipes[0]).length != 0) {
           console.log("seen is true");
-          this.seen =true;
+          this.seen = true;
         }
 
-  }
-  catch(error) {
-      console.log("error in CheckIfAlreadySeen",error);
+      }
+      catch (error) {
+        console.log("error in CheckIfAlreadySeen", error);
 
-  }
+      }
 
+    }
   }
-}}
-;
+}
+  ;
 </script>
 
 <style scoped>
-.recipe-preview {
+
+.recipe-image {
+  width: 90%;
+  height: 90%;
+}
+.recipe-image:hover {
+  box-shadow: 0 0 10px #ffff;
+}
+/* .recipe-preview {
   display: inline-block;
   width: 90%;
   height: 100%;
   position: relative;
   margin: 10px 10px;
 }
-.recipe-preview > .recipe-body {
+
+.recipe-preview>.recipe-body {
   width: 100%;
   height: 200px;
   position: relative;
@@ -174,9 +203,11 @@ export default {
   background-size: cover;
 }
 
+
+
 .recipe-preview .recipe-footer {
   width: 100%;
-  height: 50%;
+  height: 70%;
   overflow: hidden;
 }
 
@@ -221,8 +252,5 @@ export default {
   width: 90px;
   display: table-cell;
   text-align: center;
-}
-
-
-
+} */
 </style>

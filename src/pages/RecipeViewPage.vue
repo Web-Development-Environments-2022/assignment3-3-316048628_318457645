@@ -10,7 +10,7 @@
           <div class="wrapped">
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-              <div>Likes: {{ recipe.popularity }} likes</div>
+              <div>Likes: {{ recipe.aggregateLikes }} likes</div>
             </div>
             Ingredients:
             <ul>
@@ -73,7 +73,7 @@ export default {
         title,
         readyInMinutes,
         image,
-        popularity,
+        aggregateLikes,
         vegan,
         vegetarian,
         glutenFree,
@@ -94,7 +94,7 @@ export default {
         title,
         readyInMinutes,
         image,
-        popularity,
+        aggregateLikes,
         vegan,
         vegetarian,
         glutenFree,
