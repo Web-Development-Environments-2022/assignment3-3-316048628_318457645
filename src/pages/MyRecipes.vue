@@ -1,8 +1,5 @@
 <template>
 <div>
-    <h3>
-      My Recipes
-    </h3>
     <Grid title="My Recipes" class="MyRecipes center" :recipes="recipes" :recipeTemplate="recipeTemplate"></Grid>
 </div>
 </template>

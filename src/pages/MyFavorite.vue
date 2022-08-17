@@ -1,8 +1,5 @@
 <template>
 <div>
-    <h3>
-      Favorites
-    </h3>
     <Grid title="Favorite Recipes" class="FavoriteRecipes center" :recipes="recipes" :recipeTemplate="recipeTemplate" ></Grid>
 </div>
 </template>

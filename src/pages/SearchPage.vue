@@ -53,13 +53,13 @@
           <b-row>
             <b-col><h3>Sort Results By : </h3></b-col>
           <b-col>
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="preparation">
-          <label class="form-check-label" for="preparation">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="preparation" style="font-size: 20px;">
+          <label class="form-check-label" for="preparation" style="font-size: 20px;">
             preparation time 
           </label>
           <h3> </h3>
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="popularity" checked>
-          <label class="form-check-label" for="popularity">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="popularity" checked style="font-size: 20px;">
+          <label class="form-check-label" for="popularity" style="font-size: 20px;">
             popularity
           </label>
           </b-col>

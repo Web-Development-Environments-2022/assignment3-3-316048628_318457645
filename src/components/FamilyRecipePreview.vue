@@ -5,7 +5,7 @@
     class="recipe-preview"
   >
     <div class="recipe-body">
-      <img :src="recipe.image" class="recipe-image" />
+      <img :src="recipe.imageUrl" class="recipe-image" />
     </div>
     <div class="recipe-footer">
       <div :title="recipe.title" class="recipe-title">
@@ -43,7 +43,11 @@ export default {
 </script>
 
 <style scoped>
-.recipe-preview {
+.recipe-image {
+  width: 90%;
+  height: 90%;
+}
+/* .recipe-preview {
   display: inline-block;
   width: 90%;
   height: 100%;
@@ -116,5 +120,5 @@ export default {
   width: 90px;
   display: table-cell;
   text-align: center;
-}
+} */
 </style>

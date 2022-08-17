@@ -4,7 +4,7 @@
       <div class="recipe-header mt-3 mb-4">
         <h1>{{ recipe.title }}</h1>
         <h3>Recipe Owner: {{ recipe.recipeOwner }}</h3>
-        <img :src="recipe.image" class="center" />
+        <img :src="recipe.imageUrl" class="center" />
       </div>
       <div class="recipe-body">
         <div class="wrapper">
