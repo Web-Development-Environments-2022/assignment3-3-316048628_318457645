@@ -57,8 +57,8 @@ export default {
 },
 mounted()
 {     
-  // this.GetRandom();
-  // this.GetLastWathced();
+  this.GetRandom();
+  this.GetLastWathced();
 }
 ,
 methods:

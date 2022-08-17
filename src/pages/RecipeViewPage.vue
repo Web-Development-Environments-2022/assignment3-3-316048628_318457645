@@ -11,6 +11,14 @@
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
               <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+              <div>Vegan : <b-icon v-if="recipe.vegan" icon="check" style="color:white"></b-icon>
+            <b-icon v-else icon="x" style="color:white"></b-icon></div>
+<div>Vegetarian : <b-icon v-if="recipe.vegetarian"
+              icon="check" style="color:white"></b-icon>
+            <b-icon v-else icon="x" style="color:white"></b-icon></div>
+              <div>Gluten free : <b-icon v-if="recipe.glutenFree"
+              icon="check" style="color:white"></b-icon>
+            <b-icon v-else icon="x" style="color:white"></b-icon></div>
             </div>
             Ingredients:
             <ul>
